@@ -8,7 +8,7 @@
   <style>
     *{box-sizing:border-box;margin:0;padding:0;}
     body{font-family:-apple-system,'Apple SD Gothic Neo','Malgun Gothic','맑은 고딕',sans-serif;background:#f0f2f5;color:#111;padding:16px;}
-    .wrap{max-width:900px;margin:0 auto;}
+    .wrap{max-width:960px;margin:0 auto;}
     .header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:8px;}
     .header-title{font-size:17px;font-weight:700;}
     .header-period{font-size:12px;color:#666;background:#fff;border:1px solid #ddd;border-radius:6px;padding:4px 12px;}
@@ -29,18 +29,15 @@
     .ld{width:10px;height:10px;border-radius:2px;display:inline-block;margin-right:4px;vertical-align:middle;}
     .tw{overflow-x:auto;}
     table{width:100%;border-collapse:collapse;font-size:12px;}
-    th{color:#888;font-weight:600;padding:8px 8px;border-bottom:2px solid #f0f0f0;text-align:right;white-space:nowrap;background:#fafafa;}
+    th{color:#888;font-weight:600;padding:8px;border-bottom:2px solid #f0f0f0;text-align:right;white-space:nowrap;background:#fafafa;}
     th:first-child,th.l{text-align:left;}
-    td{padding:8px 8px;border-bottom:1px solid #f5f5f5;text-align:right;color:#111;}
+    td{padding:8px;border-bottom:1px solid #f5f5f5;text-align:right;color:#111;}
     td:first-child{text-align:left;color:#555;}
     td.l{text-align:left;color:#111;}
     tr.tot td{font-weight:700;background:#f7f7f7;border-top:2px solid #eee;border-bottom:none;color:#111;}
     tr.tot td:first-child{color:#111;}
     .badge{display:inline-block;font-size:11px;padding:2px 8px;border-radius:20px;font-weight:600;background:#e8f5e9;color:#2e7d32;}
     .ct{font-size:11px;color:#aaa;margin-bottom:14px;}
-    .week-tabs{display:flex;gap:5px;margin-bottom:12px;flex-wrap:wrap;}
-    .wtab{font-size:12px;padding:4px 12px;border-radius:6px;border:1px solid #ddd;background:#f5f5f5;color:#666;cursor:pointer;font-family:inherit;}
-    .wtab.active{background:#378ADD;color:#fff;border-color:#378ADD;font-weight:600;}
     @media(max-width:520px){.grid-2{grid-template-columns:1fr;}.kpi-grid{grid-template-columns:1fr;}.kpi-value{font-size:13px;}}
   </style>
 </head>
@@ -50,7 +47,6 @@
     <p class="header-title">한신우동 센터별 납품 대시보드</p>
     <span class="header-period">정산기간 2026.06.01 – 2026.06.25</span>
   </div>
-
   <div class="tab-bar">
     <button class="tab active" onclick="sp('sfn',this)">SFN</button>
     <button class="tab" onclick="sp('aone',this)">에이원서울유통</button>
@@ -58,16 +54,14 @@
     <button class="tab" onclick="sp('spc',this)">SPC GFS</button>
   </div>
 
-  <!-- ══ SFN ══ -->
+  <!-- SFN -->
   <div class="panel active" id="panel-sfn">
     <p class="ct">센터 · SFN</p>
     <div class="kpi-grid">
-      <div class="kpi"><p class="kpi-label">총 매입합계</p><p class="kpi-value">248,340,565원</p></div>
-      <div class="kpi"><p class="kpi-label">총 판매합계</p><p class="kpi-value">403,232,686원</p></div>
-      <div class="kpi"><p class="kpi-label">추정 마진</p><p class="kpi-value">154,892,121원</p><p class="kpi-mr">마진율 38.4%</p></div>
+      <div class="kpi"><p class="kpi-label">총 매입합계</p><p class="kpi-value">284,032,210원</p></div>
+      <div class="kpi"><p class="kpi-label">총 판매합계</p><p class="kpi-value">452,813,508원</p></div>
+      <div class="kpi"><p class="kpi-label">추정 마진</p><p class="kpi-value">168,781,298원</p><p class="kpi-mr">마진율 37.3%</p></div>
     </div>
-
-    <!-- 주차별 비교 -->
     <div class="card">
       <p class="card-title">주차별 매입 · 판매 · 마진 비교</p>
       <div class="legend-row">
@@ -75,58 +69,54 @@
         <span><span class="ld" style="background:#1D9E75"></span>판매합계</span>
         <span><span class="ld" style="background:#E67E22"></span>마진</span>
       </div>
-      <div class="chart-wrap" style="height:220px"><canvas id="sfn_week"></canvas></div>
+      <div class="chart-wrap" style="height:240px"><canvas id="sfn_week"></canvas></div>
     </div>
-
-    <!-- 거래처별 -->
     <div class="grid-2">
       <div class="card">
         <p class="card-title">거래처별 판매 비중</p>
-        <div class="chart-wrap" style="height:200px"><canvas id="sfn_pie"></canvas></div>
+        <div class="chart-wrap" style="height:220px"><canvas id="sfn_pie"></canvas></div>
       </div>
       <div class="card">
         <p class="card-title">거래처별 마진율</p>
-        <div class="chart-wrap" style="height:200px"><canvas id="sfn_mr"></canvas></div>
+        <div class="chart-wrap" style="height:220px"><canvas id="sfn_mr"></canvas></div>
       </div>
     </div>
-
-    <!-- 품목 상세 -->
     <div class="card">
       <p class="card-title">품목별 상세</p>
       <div class="tw"><table>
-        <colgroup><col style="width:16%"><col style="width:34%"><col style="width:8%"><col style="width:14%"><col style="width:14%"><col style="width:8%"></colgroup>
-        <thead><tr><th>거래처</th><th class="l">품목명</th><th>수량</th><th>매입합계</th><th>판매합계</th><th>마진율</th></tr></thead>
+        <colgroup><col style="width:13%"><col style="width:30%"><col style="width:6%"><col style="width:6%"><col style="width:13%"><col style="width:13%"><col style="width:8%"></colgroup>
+        <thead><tr><th>거래처</th><th class="l">품목명</th><th>단위</th><th>수량</th><th>매입합계</th><th>판매합계</th><th>마진율</th></tr></thead>
         <tbody>
-          <tr><td>㈜삼진푸드</td><td class="l">[한신] 삼진 모듬꼬치어묵</td><td>400</td><td>26,400,000</td><td>27,790,400</td><td><span class="badge">5.0%</span></td></tr>
-          <tr><td>㈜아주</td><td class="l">[한신] 돈까스트레이</td><td>119</td><td>4,974,200</td><td>7,251,729</td><td><span class="badge">31.4%</span></td></tr>
-          <tr><td>손맛</td><td class="l">[한신] 좋아한다면 황면</td><td>3,395</td><td>82,159,000</td><td>133,736,177</td><td><span class="badge">38.6%</span></td></tr>
-          <tr><td>와이비에프에스</td><td class="l">[한신/도시농원] 감자튀김채전</td><td>297</td><td>7,348,275</td><td>10,513,259</td><td><span class="badge">30.1%</span></td></tr>
-          <tr><td>와이비에프에스</td><td class="l">[한신] 고추튀김</td><td>50</td><td>6,050,000</td><td>7,482,750</td><td><span class="badge">19.1%</span></td></tr>
-          <tr><td>이지커뮤니케이션</td><td class="l">[한신] 맛 구분 스티커_매운맛</td><td>6</td><td>59,400</td><td>102,933</td><td><span class="badge">42.3%</span></td></tr>
-          <tr><td>이지커뮤니케이션</td><td class="l">[한신] 맛 구분 스티커_보통맛</td><td>8</td><td>79,200</td><td>137,244</td><td><span class="badge">42.3%</span></td></tr>
-          <tr><td>제이와이FD</td><td class="l">[한신] 매운다대기</td><td>158</td><td>10,601,800</td><td>19,719,556</td><td><span class="badge">46.2%</span></td></tr>
-          <tr><td>제이와이FD</td><td class="l">[한신] 매운돈까스소스</td><td>223</td><td>9,566,700</td><td>13,944,814</td><td><span class="badge">31.4%</span></td></tr>
-          <tr><td>제이와이FD</td><td class="l">[한신] 비빔양념장</td><td>85</td><td>3,740,000</td><td>5,245,350</td><td><span class="badge">28.7%</span></td></tr>
-          <tr><td>제이와이FD</td><td class="l">[한신] 아주매운다대기</td><td>65</td><td>4,576,000</td><td>8,623,972</td><td><span class="badge">46.9%</span></td></tr>
-          <tr><td>제이와이FD</td><td class="l">[한신] 옛날돈까스소스</td><td>616</td><td>21,141,120</td><td>36,240,758</td><td><span class="badge">41.7%</span></td></tr>
-          <tr><td>제이와이FD</td><td class="l">[한신] 해물우동육수</td><td>820</td><td>58,164,810</td><td>115,092,377</td><td><span class="badge">49.5%</span></td></tr>
-          <tr><td>제이와이FD</td><td class="l">[한신] 해장냉우동육수</td><td>150</td><td>4,801,500</td><td>7,531,425</td><td><span class="badge">36.2%</span></td></tr>
-          <tr><td>티와이팩</td><td class="l">[한신] TY-2145 짜장용기</td><td>35</td><td>2,525,600</td><td>3,023,790</td><td><span class="badge">16.5%</span></td></tr>
-          <tr><td>티와이팩</td><td class="l">[한신] TY-2167 짬뽕용기</td><td>36</td><td>2,914,560</td><td>3,406,392</td><td><span class="badge">14.4%</span></td></tr>
-          <tr><td>티와이팩</td><td class="l">[한신] 실링기필름</td><td>32</td><td>3,238,400</td><td>3,389,760</td><td><span class="badge">4.5%</span></td></tr>
-          <tr class="tot"><td>총합계</td><td class="l"></td><td>5,799</td><td>248,340,565</td><td>403,232,686</td><td><span class="badge">38.4%</span></td></tr>
+          <tr><td>㈜삼진푸드</td><td class="l">[한신] 삼진 모듬꼬치어묵</td><td>BX</td><td>600</td><td>39,600,000</td><td>41,685,600</td><td><span class="badge">5.0%</span></td></tr>
+          <tr><td>㈜아주</td><td class="l">[한신] 돈까스트레이</td><td>BX</td><td>119</td><td>4,974,200</td><td>7,251,729</td><td><span class="badge">31.4%</span></td></tr>
+          <tr><td>손맛</td><td class="l">[한신] 좋아한다면 황면</td><td>BX</td><td>3,395</td><td>82,159,000</td><td>133,736,177</td><td><span class="badge">38.6%</span></td></tr>
+          <tr><td>와이비에프에스</td><td class="l">[한신/도시농원] 감자튀김채전</td><td>BX</td><td>293</td><td>7,266,600</td><td>10,396,406</td><td><span class="badge">30.1%</span></td></tr>
+          <tr><td>와이비에프에스</td><td class="l">[한신] 고추튀김</td><td>BX</td><td>80</td><td>9,680,000</td><td>11,972,400</td><td><span class="badge">19.1%</span></td></tr>
+          <tr><td>이지커뮤니케이션</td><td class="l">[한신] 맛 구분 스티커_매운맛</td><td>BX</td><td>6</td><td>59,400</td><td>102,933</td><td><span class="badge">42.3%</span></td></tr>
+          <tr><td>이지커뮤니케이션</td><td class="l">[한신] 맛 구분 스티커_보통맛</td><td>BX</td><td>8</td><td>79,200</td><td>137,244</td><td><span class="badge">42.3%</span></td></tr>
+          <tr><td>제이와이FD</td><td class="l">[한신] 매운다대기</td><td>BX</td><td>157</td><td>10,601,800</td><td>19,719,556</td><td><span class="badge">46.2%</span></td></tr>
+          <tr><td>제이와이FD</td><td class="l">[한신] 매운돈까스소스</td><td>BX</td><td>303</td><td>12,998,700</td><td>18,947,438</td><td><span class="badge">31.4%</span></td></tr>
+          <tr><td>제이와이FD</td><td class="l">[한신] 비빔양념장</td><td>BX</td><td>85</td><td>3,740,000</td><td>5,245,350</td><td><span class="badge">28.7%</span></td></tr>
+          <tr><td>제이와이FD</td><td class="l">[한신] 아주매운다대기</td><td>BX</td><td>65</td><td>4,576,000</td><td>8,623,972</td><td><span class="badge">46.9%</span></td></tr>
+          <tr><td>제이와이FD</td><td class="l">[한신] 옛날돈까스소스</td><td>BX</td><td>1,012</td><td>34,731,840</td><td>59,538,388</td><td><span class="badge">41.7%</span></td></tr>
+          <tr><td>제이와이FD</td><td class="l">[한신] 해물우동육수</td><td>BX</td><td>819</td><td>58,164,810</td><td>115,092,377</td><td><span class="badge">49.5%</span></td></tr>
+          <tr><td>제이와이FD</td><td class="l">[한신] 해장냉우동육수</td><td>BX</td><td>210</td><td>6,722,100</td><td>10,543,995</td><td><span class="badge">36.2%</span></td></tr>
+          <tr><td>티와이팩</td><td class="l">[한신] TY-2145 짜장용기</td><td>BX</td><td>35</td><td>2,525,600</td><td>3,023,790</td><td><span class="badge">16.5%</span></td></tr>
+          <tr><td>티와이팩</td><td class="l">[한신] TY-2167 짬뽕용기</td><td>BX</td><td>36</td><td>2,914,560</td><td>3,406,392</td><td><span class="badge">14.4%</span></td></tr>
+          <tr><td>티와이팩</td><td class="l">[한신] 실링기필름</td><td>BX</td><td>32</td><td>3,238,400</td><td>3,389,760</td><td><span class="badge">4.5%</span></td></tr>
+          <tr class="tot"><td>총합계</td><td class="l"></td><td></td><td>7,257</td><td>284,032,210</td><td>452,813,508</td><td><span class="badge">37.3%</span></td></tr>
         </tbody>
       </table></div>
     </div>
   </div>
 
-  <!-- ══ 에이원서울유통 ══ -->
+  <!-- 에이원서울유통 -->
   <div class="panel" id="panel-aone">
     <p class="ct">센터 · 에이원서울유통</p>
     <div class="kpi-grid">
-      <div class="kpi"><p class="kpi-label">총 매입합계</p><p class="kpi-value">45,654,399원</p></div>
-      <div class="kpi"><p class="kpi-label">총 판매합계</p><p class="kpi-value">54,463,140원</p></div>
-      <div class="kpi"><p class="kpi-label">추정 마진</p><p class="kpi-value">8,808,740원</p><p class="kpi-mr">마진율 16.2%</p></div>
+      <div class="kpi"><p class="kpi-label">총 매입합계</p><p class="kpi-value">48,262,389원</p></div>
+      <div class="kpi"><p class="kpi-label">총 판매합계</p><p class="kpi-value">57,173,840원</p></div>
+      <div class="kpi"><p class="kpi-label">추정 마진</p><p class="kpi-value">8,911,450원</p><p class="kpi-mr">마진율 15.6%</p></div>
     </div>
     <div class="card">
       <p class="card-title">주차별 매입 · 판매 · 마진 비교</p>
@@ -135,31 +125,31 @@
         <span><span class="ld" style="background:#1D9E75"></span>판매합계</span>
         <span><span class="ld" style="background:#E67E22"></span>마진</span>
       </div>
-      <div class="chart-wrap" style="height:220px"><canvas id="aone_week"></canvas></div>
+      <div class="chart-wrap" style="height:240px"><canvas id="aone_week"></canvas></div>
     </div>
     <div class="card">
       <p class="card-title">품목별 상세</p>
       <div class="tw"><table>
-        <colgroup><col style="width:18%"><col style="width:28%"><col style="width:8%"><col style="width:15%"><col style="width:15%"><col style="width:9%"></colgroup>
-        <thead><tr><th>거래처</th><th class="l">품목명</th><th>수량</th><th>매입합계</th><th>판매합계</th><th>마진율</th></tr></thead>
+        <colgroup><col style="width:14%"><col style="width:28%"><col style="width:7%"><col style="width:7%"><col style="width:13%"><col style="width:13%"><col style="width:8%"></colgroup>
+        <thead><tr><th>거래처</th><th class="l">품목명</th><th>단위</th><th>수량</th><th>매입합계</th><th>판매합계</th><th>마진율</th></tr></thead>
         <tbody>
-          <tr><td>삼진식품(주)</td><td class="l">삼진모듬꼬지어묵</td><td>280</td><td>18,480,000</td><td>19,243,840</td><td><span class="badge">4.0%</span></td></tr>
-          <tr><td>제이와이FD</td><td class="l">매운다대기</td><td>50</td><td>3,355,000</td><td>4,862,000</td><td><span class="badge">31.0%</span></td></tr>
-          <tr><td>제이와이FD</td><td class="l">해물우동육수</td><td>250</td><td>17,737,500</td><td>23,057,500</td><td><span class="badge">23.1%</span></td></tr>
-          <tr><td>제이와이FD</td><td class="l">해장냉우동육수</td><td>190</td><td>6,081,900</td><td>7,299,800</td><td><span class="badge">16.7%</span></td></tr>
-          <tr class="tot"><td>총합계</td><td class="l"></td><td>770</td><td>45,654,399</td><td>54,463,140</td><td><span class="badge">16.2%</span></td></tr>
+          <tr><td>삼진식품(주)</td><td class="l">삼진모듬꼬지어묵</td><td>BX</td><td>320</td><td>21,119,999</td><td>21,992,960</td><td><span class="badge">4.0%</span></td></tr>
+          <tr><td>제이와이FD</td><td class="l">매운다대기</td><td>BX</td><td>50</td><td>3,354,999</td><td>4,862,000</td><td><span class="badge">31.0%</span></td></tr>
+          <tr><td>제이와이FD</td><td class="l">해물우동육수</td><td>BX</td><td>250</td><td>17,737,499</td><td>23,057,500</td><td><span class="badge">23.1%</span></td></tr>
+          <tr><td>제이와이FD</td><td class="l">해장냉우동육수</td><td>BX</td><td>189</td><td>6,049,890</td><td>7,261,380</td><td><span class="badge">16.7%</span></td></tr>
+          <tr class="tot"><td>총합계</td><td class="l"></td><td></td><td>809</td><td>48,262,389</td><td>57,173,840</td><td><span class="badge">15.6%</span></td></tr>
         </tbody>
       </table></div>
     </div>
   </div>
 
-  <!-- ══ 성공스토리 ══ -->
+  <!-- 성공스토리 -->
   <div class="panel" id="panel-suc">
     <p class="ct">센터 · 성공스토리</p>
     <div class="kpi-grid">
-      <div class="kpi"><p class="kpi-label">총 매입합계</p><p class="kpi-value">7,608,699원</p></div>
-      <div class="kpi"><p class="kpi-label">총 판매합계</p><p class="kpi-value">10,085,050원</p></div>
-      <div class="kpi"><p class="kpi-label">추정 마진</p><p class="kpi-value">2,476,350원</p><p class="kpi-mr">마진율 24.6%</p></div>
+      <div class="kpi"><p class="kpi-label">총 매입합계</p><p class="kpi-value">10,908,699원</p></div>
+      <div class="kpi"><p class="kpi-label">총 판매합계</p><p class="kpi-value">13,521,450원</p></div>
+      <div class="kpi"><p class="kpi-label">추정 마진</p><p class="kpi-value">2,612,750원</p><p class="kpi-mr">마진율 19.3%</p></div>
     </div>
     <div class="card">
       <p class="card-title">주차별 매입 · 판매 · 마진 비교</p>
@@ -168,31 +158,32 @@
         <span><span class="ld" style="background:#1D9E75"></span>판매합계</span>
         <span><span class="ld" style="background:#E67E22"></span>마진</span>
       </div>
-      <div class="chart-wrap" style="height:220px"><canvas id="suc_week"></canvas></div>
+      <div class="chart-wrap" style="height:240px"><canvas id="suc_week"></canvas></div>
     </div>
     <div class="card">
       <p class="card-title">품목별 상세</p>
       <div class="tw"><table>
-        <colgroup><col style="width:18%"><col style="width:28%"><col style="width:8%"><col style="width:15%"><col style="width:15%"><col style="width:9%"></colgroup>
-        <thead><tr><th>거래처</th><th class="l">품목명</th><th>수량</th><th>매입합계</th><th>판매합계</th><th>마진율</th></tr></thead>
+        <colgroup><col style="width:14%"><col style="width:28%"><col style="width:7%"><col style="width:7%"><col style="width:13%"><col style="width:13%"><col style="width:8%"></colgroup>
+        <thead><tr><th>거래처</th><th class="l">품목명</th><th>단위</th><th>수량</th><th>매입합계</th><th>판매합계</th><th>마진율</th></tr></thead>
         <tbody>
-          <tr><td>제이와이FD</td><td class="l">매운다대기</td><td>20</td><td>1,342,000</td><td>1,944,800</td><td><span class="badge">31.0%</span></td></tr>
-          <tr><td>제이와이FD</td><td class="l">비빔양념장</td><td>15</td><td>660,000</td><td>915,750</td><td><span class="badge">27.9%</span></td></tr>
-          <tr><td>제이와이FD</td><td class="l">해물우동육수</td><td>70</td><td>4,966,500</td><td>6,456,100</td><td><span class="badge">23.1%</span></td></tr>
-          <tr><td>제이와이FD</td><td class="l">해장냉우동육수</td><td>20</td><td>640,200</td><td>768,400</td><td><span class="badge">16.7%</span></td></tr>
-          <tr class="tot"><td>총합계</td><td class="l"></td><td>125</td><td>7,608,699</td><td>10,085,050</td><td><span class="badge">24.6%</span></td></tr>
+          <tr><td>삼진식품(주)</td><td class="l">[한신] 삼진 모듬꼬치어묵</td><td>BX</td><td>50</td><td>3,299,999</td><td>3,436,400</td><td><span class="badge">4.0%</span></td></tr>
+          <tr><td>제이와이FD</td><td class="l">매운다대기</td><td>BX</td><td>20</td><td>1,341,999</td><td>1,944,800</td><td><span class="badge">31.0%</span></td></tr>
+          <tr><td>제이와이FD</td><td class="l">비빔양념장</td><td>BX</td><td>15</td><td>660,000</td><td>915,749</td><td><span class="badge">27.9%</span></td></tr>
+          <tr><td>제이와이FD</td><td class="l">해물우동육수</td><td>BX</td><td>70</td><td>4,966,499</td><td>6,456,100</td><td><span class="badge">23.1%</span></td></tr>
+          <tr><td>제이와이FD</td><td class="l">해장냉우동육수</td><td>BX</td><td>20</td><td>640,200</td><td>768,400</td><td><span class="badge">16.7%</span></td></tr>
+          <tr class="tot"><td>총합계</td><td class="l"></td><td></td><td>175</td><td>10,908,699</td><td>13,521,450</td><td><span class="badge">19.3%</span></td></tr>
         </tbody>
       </table></div>
     </div>
   </div>
 
-  <!-- ══ SPC GFS ══ -->
+  <!-- SPC GFS -->
   <div class="panel" id="panel-spc">
     <p class="ct">센터 · SPC GFS</p>
     <div class="kpi-grid">
-      <div class="kpi"><p class="kpi-label">총 매입합계</p><p class="kpi-value">2,958,450원</p></div>
-      <div class="kpi"><p class="kpi-label">총 판매합계</p><p class="kpi-value">3,871,835원</p></div>
-      <div class="kpi"><p class="kpi-label">추정 마진</p><p class="kpi-value">913,385원</p><p class="kpi-mr">마진율 23.6%</p></div>
+      <div class="kpi"><p class="kpi-label">총 매입합계</p><p class="kpi-value">8,131,200원</p></div>
+      <div class="kpi"><p class="kpi-label">총 판매합계</p><p class="kpi-value">10,084,910원</p></div>
+      <div class="kpi"><p class="kpi-label">추정 마진</p><p class="kpi-value">1,953,710원</p><p class="kpi-mr">마진율 19.4%</p></div>
     </div>
     <div class="card">
       <p class="card-title">주차별 매입 · 판매 · 마진 비교</p>
@@ -201,25 +192,25 @@
         <span><span class="ld" style="background:#1D9E75"></span>판매합계</span>
         <span><span class="ld" style="background:#E67E22"></span>마진</span>
       </div>
-      <div class="chart-wrap" style="height:220px"><canvas id="spc_week"></canvas></div>
+      <div class="chart-wrap" style="height:240px"><canvas id="spc_week"></canvas></div>
     </div>
     <div class="card">
       <p class="card-title">품목별 상세</p>
       <div class="tw"><table>
-        <colgroup><col style="width:18%"><col style="width:28%"><col style="width:8%"><col style="width:15%"><col style="width:15%"><col style="width:9%"></colgroup>
-        <thead><tr><th>거래처</th><th class="l">품목명</th><th>수량</th><th>매입합계</th><th>판매합계</th><th>마진율</th></tr></thead>
+        <colgroup><col style="width:14%"><col style="width:28%"><col style="width:7%"><col style="width:7%"><col style="width:13%"><col style="width:13%"><col style="width:8%"></colgroup>
+        <thead><tr><th>거래처</th><th class="l">품목명</th><th>단위</th><th>수량</th><th>매입합계</th><th>판매합계</th><th>마진율</th></tr></thead>
         <tbody>
-          <tr><td>삼진식품(주)</td><td class="l">삼진모듬꼬지어묵</td><td>10</td><td>660,000</td><td>687,500</td><td><span class="badge">4.0%</span></td></tr>
-          <tr><td>제이와이FD</td><td class="l">옛날돈까스소스</td><td>25</td><td>858,000</td><td>1,455,300</td><td><span class="badge">41.0%</span></td></tr>
-          <tr><td>제이와이FD</td><td class="l">해장냉우동육수</td><td>45</td><td>1,440,450</td><td>1,729,035</td><td><span class="badge">16.7%</span></td></tr>
-          <tr class="tot"><td>총합계</td><td class="l"></td><td>80</td><td>2,958,450</td><td>3,871,835</td><td><span class="badge">23.6%</span></td></tr>
+          <tr><td>삼진식품(주)</td><td class="l">삼진모듬꼬지어묵</td><td>BX</td><td>40</td><td>2,639,999</td><td>2,750,000</td><td><span class="badge">4.0%</span></td></tr>
+          <tr><td>제이와이FD</td><td class="l">옛날돈까스소스</td><td>BX</td><td>25</td><td>858,000</td><td>1,455,300</td><td><span class="badge">41.0%</span></td></tr>
+          <tr><td>제이와이FD</td><td class="l">해물우동육수</td><td>BX</td><td>45</td><td>3,192,749</td><td>4,150,575</td><td><span class="badge">23.1%</span></td></tr>
+          <tr><td>제이와이FD</td><td class="l">해장냉우동육수</td><td>BX</td><td>45</td><td>1,440,450</td><td>1,729,035</td><td><span class="badge">16.7%</span></td></tr>
+          <tr class="tot"><td>총합계</td><td class="l"></td><td></td><td>155</td><td>8,131,200</td><td>10,084,910</td><td><span class="badge">19.4%</span></td></tr>
         </tbody>
       </table></div>
     </div>
   </div>
 
 </div>
-
 <script>
 function sp(id,el){
   document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
@@ -227,92 +218,75 @@ function sp(id,el){
   document.getElementById('panel-'+id).classList.add('active');
   el.classList.add('active');
 }
-
 const B='#378ADD',G='#1D9E75',O='#E67E22';
 const weeks=['6월 1주차','6월 2주차','6월 3주차','6월 4주차'];
 const fo={size:11};
 const gy='rgba(0,0,0,0.05)';
-const baseOpt={responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}}};
+const base={responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}}};
 
-function weekChart(id,buyArr,sellArr,marginArr){
+function wkChart(id,buy,sell,mgn){
   new Chart(document.getElementById(id),{
     type:'bar',
-    data:{
-      labels:weeks,
-      datasets:[
-        {label:'매입',data:buyArr,backgroundColor:B+'BB'},
-        {label:'판매',data:sellArr,backgroundColor:G+'BB'},
-        {label:'마진',data:marginArr,backgroundColor:O+'BB'},
-      ]
-    },
-    options:{...baseOpt,scales:{
+    data:{labels:weeks,datasets:[
+      {label:'매입',data:buy,backgroundColor:B+'BB'},
+      {label:'판매',data:sell,backgroundColor:G+'BB'},
+      {label:'마진',data:mgn,backgroundColor:O+'BB'},
+    ]},
+    options:{...base,scales:{
       x:{ticks:{font:fo},grid:{display:false}},
       y:{ticks:{callback:v=>(v/1000000).toFixed(0)+'M',font:fo},grid:{color:gy}}
     }}
   });
 }
 
-// SFN 주차별
-weekChart('sfn_week',
-  [105555120,72539445,70246000,0],
-  [171172780,106927757,125132149,0],
-  [65617660,34388312,54886149,0]
+wkChart('sfn_week',
+  [105555120,72539445,70246000,35691645],
+  [171172780,106927757,125132149,49580821],
+  [65617660,34388312,54886149,13889176]
+);
+wkChart('aone_week',
+  [15707999,20877999,0,11676389],
+  [17528980,26115740,0,13529120],
+  [1820980,5237740,0,1852730]
+);
+wkChart('suc_week',
+  [5549499,0,2059199,3299999],
+  [7472050,0,2613000,3436400],
+  [1922550,0,553800,136400]
+);
+wkChart('spc_week',
+  [2958450,0,0,5172749],
+  [3871835,0,0,6213075],
+  [913385,0,0,1040325]
 );
 
-// SFN 거래처별 판매 도넛
 new Chart(document.getElementById('sfn_pie'),{
   type:'doughnut',
   data:{
     labels:['손맛','제이와이FD','㈜삼진푸드','와이비에프에스','티와이팩','기타'],
     datasets:[{
-      data:[133736177,205374252,27790400,17996009,9819942,8516906],
+      data:[133736177,237711076,41685600,22368806,9819942,7492107],
       backgroundColor:['#378ADD','#1D9E75','#E67E22','#9B59B6','#E74C3C','#95A5A6'],
       borderWidth:2,borderColor:'#fff'
     }]
   },
-  options:{...baseOpt,cutout:'55%',plugins:{legend:{display:true,position:'bottom',labels:{font:{size:10},boxWidth:12}}}}
+  options:{...base,cutout:'55%',plugins:{legend:{display:true,position:'bottom',labels:{font:{size:10},boxWidth:12}}}}
 });
 
-// SFN 거래처별 마진율
 new Chart(document.getElementById('sfn_mr'),{
   type:'bar',
   data:{
-    labels:['손맛','제이와이FD','와이비에프에스','㈜삼진푸드','티와이팩','이지커뮤','㈜아주'],
+    labels:['손맛','제이와이FD','와이비에프에스','㈜아주','이지커뮤','㈜삼진푸드','티와이팩'],
     datasets:[{
-      data:[38.6,44.2,26.0,5.0,10.6,42.3,31.4],
-      backgroundColor:[B+'BB',G+'BB',O+'BB','#9B59B6BB','#E74C3CBB','#1ABCBB','#F39C12BB']
+      data:[38.6,44.7,24.2,31.4,42.3,5.0,11.6],
+      backgroundColor:[B+'BB',G+'BB',O+'BB','#9B59B6BB','#1ABCBBBB','#E74C3CBB','#95A5A6BB']
     }]
   },
-  options:{
-    ...baseOpt,
-    indexAxis:'y',
-    scales:{
-      x:{ticks:{callback:v=>v+'%',font:{size:10}},grid:{color:gy}},
-      y:{ticks:{font:{size:10}},grid:{display:false}}
-    }
-  }
+  options:{...base,indexAxis:'y',scales:{
+    x:{ticks:{callback:v=>v+'%',font:fo},grid:{color:gy}},
+    y:{ticks:{font:{size:10}},grid:{display:false}}
+  }}
 });
-
-// 에이원서울유통 주차별
-weekChart('aone_week',
-  [5148000,31437999,0,9068400],
-  [6532500,37112220,0,10818420],
-  [1384500,5674220,0,1750020]
-);
-
-// 성공스토리 주차별
-weekChart('suc_week',
-  [5549499,0,2059199,0],
-  [7472050,0,2613000,0],
-  [1922550,0,553800,0]
-);
-
-// SPC GFS 주차별
-weekChart('spc_week',
-  [2958450,0,0,0],
-  [3871835,0,0,0],
-  [913385,0,0,0]
-);
 </script>
 </body>
 </html>
